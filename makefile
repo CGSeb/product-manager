@@ -12,6 +12,8 @@ init:
 	$(MAKE) create-folders
 	$(MAKE) build
 	$(MAKE) start
+	$(MAKE) composer-install
+	$(MAKE) generate-keys
 
 create-folders:
 	mkdir -p ./app ./data/postgres ./logs/nginx
@@ -33,3 +35,17 @@ restart:
 	$(MAKE) stop
 	$(MAKE) start
 
+# ------------------------------ COMPOSER ------------------------------
+composer-install:
+	$(COMPOSER) install
+
+composer-update:
+	$(COMPOSER) update
+
+composer-clear-cache:
+	$(COMPOSER) clear-cache
+
+# ------------------------------ OTHER ------------------------------
+
+generate-keys:
+	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
