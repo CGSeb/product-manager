@@ -1,6 +1,8 @@
 EXEC = docker exec -it php-fpm
+EXEC_FRONT = docker exec -it php-fpm
 PHP = $(EXEC) php
 COMPOSER = $(EXEC) composer
+NPM = $(EXEC_FRONT) npm
 SYMFONY_CONSOLE = $(PHP) bin/console
 
 # Colors
@@ -16,7 +18,7 @@ init:
 	$(MAKE) generate-keys
 
 create-folders:
-	mkdir -p ./app ./data/postgres ./logs/nginx
+	mkdir -p ./data/postgres ./logs/nginx
 
 # ------------------------------ DOCKER ------------------------------
 build:
