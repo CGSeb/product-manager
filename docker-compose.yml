@@ -39,6 +39,17 @@ services:
     volumes:
       - ${APP_FOLDER}:/var/www
 
+  front:
+    container_name: "front"
+    build:
+      context: ./app-front
+    volumes:
+      - /app/node_modules
+      - ${APP_FRONT_FOLDER}:/app
+    ports:
+      - 8081:5176
+    command: "npm run dev -- --host --port 5176"
+
   nginx:
     container_name: "nginx"
     environment:
