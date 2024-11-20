@@ -51,3 +51,6 @@ composer-clear-cache:
 
 generate-keys:
 	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
+
+bash:
+	$(EXEC) bash
