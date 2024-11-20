@@ -51,7 +51,11 @@
   }
 
   .navbar-light a:hover {
-    color: #ececec;
+    color: #aeaeae;
+  }
+
+  .navbar-collapse {
+    flex: 0;
   }
 
   .auth-wrapper {
@@ -102,5 +106,9 @@
   .btn-block {
     width: 100%;
     background-color: #167bff !important;
+  }
+
+  .error {
+    white-space: pre;
   }
 </style>
