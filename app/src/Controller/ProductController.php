@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\DTO\ListProductsDTO;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,6 +20,7 @@ class ProductController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
+        private ProductRepository $productRepository,
     ) {
     }
 
@@ -29,6 +33,18 @@ class ProductController extends AbstractController
 
         return new JsonResponse(
             $this->serializer->serialize($product, 'json'),
+        );
+    }
+
+    #[Route('', name: 'app_product_list', methods: [Request::METHOD_GET])]
+    public function list(
+        #[MapQueryString] ListProductsDTO $listProductsDTO,
+    ): JsonResponse {
+        $products = $this->productRepository->listProducts($listProductsDTO);
+
+        return new JsonResponse(
+            data: $this->serializer->serialize($products, 'json'),
+            json: true
         );
     }
 }

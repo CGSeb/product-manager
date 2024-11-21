@@ -13,7 +13,7 @@
 
             <div class="mb-3">
                 <label>Price</label>
-                <input type="number" v-model="price" class="form-control" placeholder="0" />
+                <input type="number" step=any v-model="price" class="form-control" placeholder="0" />
             </div>
 
             <button class="btn btn-primary btn-block">Create</button>

@@ -3,11 +3,10 @@
     <h1>Home</h1>
     <div class="container">
         <router-link to="/product-create" class="nav-link">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    Product
-                </div>
-            </div>
+            <button class="btn btn-primary">Product</button>
+        </router-link>
+        <router-link to="/products" class="nav-link">
+            <button class="btn btn-primary">Product List</button>
         </router-link>
     </div>
 </template>
