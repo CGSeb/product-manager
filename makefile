@@ -47,6 +47,9 @@ composer-update:
 composer-clear-cache:
 	$(COMPOSER) clear-cache
 
+composer-csi:
+	$(COMPOSER) csi
+
 # ------------------------------ OTHER ------------------------------
 
 generate-keys:

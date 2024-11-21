@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,14 +15,15 @@ class ListProductsDTO
         #[Assert\GreaterThan(5)]
         public int $limit,
 
-        public string $q='',
-    ){
+        public string $q = '',
+    ) {
     }
 
     public function getOrder(): string
     {
-        if (str_ends_with($this->sortType, 'ASC'))
+        if (str_ends_with($this->sortType, 'ASC')) {
             return 'ASC';
+        }
 
         return 'DESC';
     }

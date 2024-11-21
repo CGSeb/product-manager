@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +16,7 @@ class HomeController
         $number = random_int(0, 100);
 
         return new JsonResponse(
-            ["number" => $number],
+            ['number' => $number],
         );
     }
 }
