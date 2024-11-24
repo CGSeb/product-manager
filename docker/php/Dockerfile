@@ -1,7 +1,7 @@
 ARG PHP_VERSION
 
 # Use the official PHP FPM Alpine image
-FROM php:${PHP_VERSION}-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 # Install necessary packages
 RUN apk update && \
@@ -16,9 +16,14 @@ RUN apk update && \
         postgresql-dev \
         libsodium-dev \
         libzip-dev \
+        pcre-dev ${PHPIZE_DEPS}\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo_pgsql sodium zip
+
+RUN pecl install pcov && docker-php-ext-enable pcov
+
+RUN apk del pcre-dev ${PHPIZE_DEPS}
 
 # Clean up package cache
 RUN rm -rf /var/cache/apk/*

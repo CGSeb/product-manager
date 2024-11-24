@@ -16,6 +16,8 @@ init:
 	$(MAKE) start
 	$(MAKE) composer-install
 	$(MAKE) generate-keys
+	$(MAKE) test-db
+	$(MAKE) base-tables
 
 create-folders:
 	mkdir -p ./data/postgres ./logs/nginx
@@ -51,9 +53,19 @@ composer-csi:
 	$(COMPOSER) csi
 
 # ------------------------------ OTHER ------------------------------
+bash:
+	$(EXEC) bash
 
+# ------------------------------ SYMFONY ------------------------------
 generate-keys:
 	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
 
-bash:
-	$(EXEC) bash
+test-db:
+	$(SYMFONY_CONSOLE) --env=test doctrine:database:create
+	$(SYMFONY_CONSOLE) --env=test doctrine:schema:create
+
+base-tables:
+	$(SYMFONY_CONSOLE) doctrine:schema:create
+
+load-base-data:
+	$(SYMFONY_CONSOLE) doctrine:fixtures:load -n

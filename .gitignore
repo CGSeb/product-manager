@@ -9,4 +9,3 @@
 data/
 logs/
 /.env
-*.pem
