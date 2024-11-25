@@ -18,6 +18,7 @@ init:
 	$(MAKE) generate-keys
 	$(MAKE) test-db
 	$(MAKE) base-tables
+	$(MAKE) load-base-data
 
 create-folders:
 	mkdir -p ./data/postgres ./logs/nginx

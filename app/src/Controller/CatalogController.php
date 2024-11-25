@@ -8,7 +8,6 @@ use App\DTO\CatalogDTO;
 use App\Entity\Catalog;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +34,10 @@ class CatalogController extends AbstractController
         $catalog = (new Catalog())
             ->setName($catalogDTO->name);
 
-        foreach($catalogDTO->products as $productId) {
+        foreach ($catalogDTO->products as $productId) {
             $product = $this->productRepository->find($productId);
-            if($product ===null) {
-                throw new BadRequestHttpException(
-                    message: sprintf("Product with id '%s' not found", $productId),
-                    code: Response::HTTP_BAD_REQUEST,
-                );
+            if ($product === null) {
+                throw new BadRequestHttpException(message: sprintf("Product with id '%s' not found", $productId), code: Response::HTTP_BAD_REQUEST);
             }
 
             $catalog->addProduct($product);
@@ -51,7 +47,7 @@ class CatalogController extends AbstractController
         $this->entityManager->flush();
 
         return new JsonResponse(
-            data: $this->serializer->serialize($catalog, 'json', ['groups'=> ['single']]),
+            data: $this->serializer->serialize($catalog, 'json', ['groups' => ['single']]),
             json: true,
         );
     }
