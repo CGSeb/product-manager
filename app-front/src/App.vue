@@ -111,4 +111,10 @@
   .error {
     white-space: pre;
   }
+  
+
+  .multiselect__option--highlight, .multiselect__option--highlight::after, .multiselect__tag
+  {
+    background: #167bff;
+  }
 </style>
