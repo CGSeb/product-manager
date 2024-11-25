@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand navbar-light fixed-top">
       <div class="container">
-        <router-link to="/" class="navbar-brand">Home</router-link>
+        <router-link to="/" class="navbar-brand">Product Manager</router-link>
         <div class="collapse navbar-collapse">
           <div>{{ email }}</div>
           <ul class="navbar-nav ml-auto">
