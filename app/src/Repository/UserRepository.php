@@ -16,8 +16,8 @@ class UserRepository extends ServiceEntityRepository
 {
     public function __construct(
         private ManagerRegistry $registry,
-        private UserPasswordHasherInterface $userPasswordHasher,
+        private UserPasswordHasherInterface $userPasswordHasher, /* @phpstan-ignore property.onlyWritten */
     ) {
-        parent::__construct($registry, User::class);
+        parent::__construct($this->registry, User::class);
     }
 }

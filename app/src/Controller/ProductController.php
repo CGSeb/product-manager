@@ -45,7 +45,7 @@ class ProductController extends AbstractController
         $products = $this->productRepository->listProducts($listProductsDTO);
 
         return new JsonResponse(
-            data: $this->serializer->serialize($products, 'json', ['groups'=> ['list']]),
+            data: $this->serializer->serialize($products, 'json', ['groups' => ['list']]),
             json: true
         );
     }
