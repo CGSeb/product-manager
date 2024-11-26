@@ -3,19 +3,24 @@
     <h1>Product Manager</h1>
     <div class="container">
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <router-link to="/product-create" class="nav-link">
                     <button class="btn btn-primary">Create a Product</button>
                 </router-link>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <router-link to="/products" class="nav-link">
                     <button class="btn btn-primary">Product List</button>
                 </router-link>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <router-link to="/catalog-create" class="nav-link">
                     <button class="btn btn-primary">Create a Catalog</button>
+                </router-link>
+            </div>
+            <div class="col-3">
+                <router-link to="/catalogs" class="nav-link">
+                    <button class="btn btn-primary">Catalog List</button>
                 </router-link>
             </div>
         </div>

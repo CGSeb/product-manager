@@ -1,5 +1,11 @@
 <template>
     <Nav/>
+    <div class="container">
+        <router-link to="/products" class="nav-link">
+            <button class="btn btn-primary">Product List</button>
+        </router-link>
+    </div>
+
     <div class="auth-wrapper">
       <div class="auth-inner">
         <form @submit.prevent="handleSubmit">
