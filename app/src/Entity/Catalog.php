@@ -17,12 +17,12 @@ class Catalog
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['single'])]
+    #[Groups(['single', 'list'])]
     private ?int $id = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
-    #[Groups(['single'])]
+    #[Groups(['single', 'list'])]
     private string $name = '';
 
     /**
@@ -78,5 +78,11 @@ class Catalog
     public function getProductIds(): array
     {
         return array_map(fn (Product $product) => $product->getId(), $this->getProducts()->toArray());
+    }
+
+    #[Groups(['list'])]
+    public function getNumberOfProducts(): int
+    {
+        return $this->getProducts()->count();
     }
 }

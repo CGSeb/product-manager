@@ -105,6 +105,102 @@ class CatalogControllerTest extends AuthTest
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideCatalogList
+     */
+    public function testCatalogList(
+        array $queryParams, 
+        int $responseCode=200, 
+        int $expectedCount=0, 
+        string $firstItemName='',
+        array $violations=[], 
+    ) {
+        $queryStrings = [];
+        foreach($queryParams as $key => $value) {
+            $queryStrings[] = $key.'='.$value;
+        }
+
+        $queryString = '?'.implode('&', $queryStrings);
+
+        $client = $this->createAuthenticatedClient();
+        $client->jsonRequest(
+            method:'GET', 
+            uri: '/api/catalog'.$queryString,
+        );
+
+        $response = $client->getResponse();
+        $jsonResponse = json_decode($response->getContent(), true);
+
+        $this->assertEquals($responseCode, $response->getStatusCode());
+
+        if ($expectedCount > 0) {
+            $this->assertCount($expectedCount, $jsonResponse);
+        }
+        if ($firstItemName !== '') {
+            $this->assertEquals($firstItemName, $jsonResponse[0]['name'] ?? null);
+        }
+
+        if ($responseCode !== 200) {
+            $this->assertViolations($jsonResponse, $violations);
+
+            return;
+        }
+    }
+
+    public static function provideCatalogList(): iterable
+    {
+        yield 'Success: list nameASC 10' => [
+            'queryParams' => [
+                'sortType' => 'nameASC',
+                'limit' => 10,
+            ],
+            'responseCode' => 200,
+            'expectedCount' => 4,
+            'firstItemName' => 'Catalog 01',
+        ];
+
+        yield 'Success: list productsDESC 10' => [
+            'queryParams' => [
+                'sortType' => 'productsDESC',
+                'limit' => 10,
+            ],
+            'responseCode' => 200,
+            'expectedCount' => 4,
+            'firstItemName' => 'Catalog 02',
+        ];
+
+        yield 'Success: list nameDESC 10 q=2' => [
+            'queryParams' => [
+                'sortType' => 'nameDESC',
+                'limit' => 10,
+                'q' => '3',
+            ],
+            'responseCode' => 200,
+            'expectedCount' => 2,
+            'firstItemName' => 'Catalog 33',
+        ];
+
+        yield 'Fail: missing sortType' => [
+            'queryParams' => [
+                'limit' => 10,
+            ],
+            'responseCode' => 404,
+            'violations' => [
+                ['propertyPath' => 'sortType', 'title' => 'This value should be of type string.'],
+            ],
+        ];
+
+        yield 'Fail: missing limit' => [
+            'queryParams' => [
+                'sortType' => 'nameASC',
+            ],
+            'responseCode' => 404,
+            'violations' => [
+                ['propertyPath' => 'limit', 'title' => 'This value should be of type int.'],
+            ],
+        ];
+    }
     
     public function tearDown(): void
     {

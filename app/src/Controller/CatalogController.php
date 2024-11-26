@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DTO\CatalogDTO;
+use App\DTO\ListCatalogsDTO;
 use App\Entity\Catalog;
+use App\Repository\CatalogRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,6 +27,7 @@ class CatalogController extends AbstractController
         private EntityManagerInterface $entityManager,
         private SerializerInterface $serializer,
         private ProductRepository $productRepository,
+        private CatalogRepository $catalogRepository,
     ) {
     }
 
@@ -49,6 +53,18 @@ class CatalogController extends AbstractController
         return new JsonResponse(
             data: $this->serializer->serialize($catalog, 'json', ['groups' => ['single']]),
             json: true,
+        );
+    }
+
+    #[Route('', name: 'app_catalog_list', methods: [Request::METHOD_GET])]
+    public function list(
+        #[MapQueryString] ListCatalogsDTO $listCatalogsDTO,
+    ): JsonResponse {
+        $catalogs = $this->catalogRepository->listCatalogs($listCatalogsDTO);
+
+        return new JsonResponse(
+            data: $this->serializer->serialize($catalogs, 'json', ['groups' => ['list']]),
+            json: true
         );
     }
 }
