@@ -29,20 +29,33 @@
                         <option value="50">50</option>
                     </select>
                 </div>
+                <div class="col-4">
+                    <multiselect 
+                        v-model="catalogs" 
+                        :options="options" 
+                        :multiple="true" 
+                        :close-on-select="false"
+                        label="name"
+                        track-by="name"/>
+                </div>
             </div>
         </div>
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Catalog</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="product in products">
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }} €</td>
+                    <td v-if="product.catalogName">{{ product.catalogName }}</td>
+                    
+                    <td v-else>-</td>
                 </tr>
             </tbody>
         </table>
@@ -53,11 +66,16 @@
     import axios from 'axios';
     import { onMounted, ref, watch } from 'vue';
     import Nav from './Nav.vue';
+    import Multiselect from 'vue-multiselect';
 
     const products = ref([]);
     const search = ref();
     const sortType = ref('nameASC');
     const limit = ref(20);
+
+    
+    const options = ref([]);
+    const catalogs = ref([]);
 
     function getProductList()
     {
@@ -66,17 +84,32 @@
             queryParams += '&q=' + search.value;
         }
 
+        if (catalogs.value != null) {
+            catalogs.value.forEach((catalog) => {
+                queryParams += '&catalogs[]='+catalog.id;
+            })
+        }
+
         axios.get('product'+queryParams).then( response => {
             products.value = response.data
         });
     }
 
+    function getCatalogList()
+    {
+        axios.get('catalog?sortType=nameASC&limit=15').then( response => {
+            options.value = response.data
+        });
+    }
+
     onMounted(() => {
         getProductList()
+        getCatalogList()
     })
 
     watch(search, async (newSearch) => getProductList());
     watch(sortType, async (newSortType) => getProductList());
     watch(limit, async (newLimit) => getProductList());
+    watch(catalogs, async (newCatalogs) => getProductList());
 
 </script>

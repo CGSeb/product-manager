@@ -24,9 +24,18 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function listProducts(ListProductsDTO $listProductsDTO): array
     {
-        return $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftjoin('p.catalog', 'c')
             ->where('ILIKE(p.name, :search) = true')
-            ->setParameter('search', '%'.$listProductsDTO->q.'%')
+            ->setParameter('search', '%'.$listProductsDTO->q.'%');
+
+        if (!empty($listProductsDTO->catalogs)) {
+            $queryBuilder
+                ->andWhere('c.id IN (:catalogIds)')
+                ->setParameter('catalogIds', $listProductsDTO->catalogs);
+        }
+
+        return $queryBuilder
             ->orderBy('p.'.$listProductsDTO->getOrderField(), $listProductsDTO->getOrder())
             ->setMaxResults($listProductsDTO->limit)
             ->getQuery()

@@ -103,7 +103,14 @@ class ProductControllerTest extends AuthTest
     ) {
         $queryStrings = [];
         foreach($queryParams as $key => $value) {
-            $queryStrings[] = $key.'='.$value;
+            if ($key !== 'catalogs') {
+                $queryStrings[] = $key.'='.$value;
+                continue;
+            }
+            
+            foreach ($value as $catalogId) {
+                $queryStrings[] = 'catalogs[]='.$catalogId;
+            }
         }
 
         $queryString = '?'.implode('&', $queryStrings);
@@ -154,6 +161,17 @@ class ProductControllerTest extends AuthTest
             'responseCode' => 200,
             'expectedCount' => 2,
             'firstItemName' => 'Product 12',
+        ];
+
+        yield 'Success: list nameDESC 10 catalog id 1 "Catalog 02"' => [
+            'queryParams' => [
+                'sortType' => 'nameDESC',
+                'limit' => 10,
+                'catalogs' => [1],
+            ],
+            'responseCode' => 200,
+            'expectedCount' => 3,
+            'firstItemName' => 'Product 11',
         ];
 
         yield 'Fail: missing sortType' => [
