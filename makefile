@@ -44,9 +44,6 @@ restart:
 composer-install:
 	$(COMPOSER) install
 
-composer-update:
-	$(COMPOSER) update
-
 composer-clear-cache:
 	$(COMPOSER) clear-cache
 
@@ -69,4 +66,6 @@ base-tables:
 	$(SYMFONY_CONSOLE) doctrine:schema:create
 
 load-base-data:
+	$(SYMFONY_CONSOLE) doctrine:schema:drop --force
+	$(SYMFONY_CONSOLE) doctrine:schema:create
 	$(SYMFONY_CONSOLE) doctrine:fixtures:load -n
