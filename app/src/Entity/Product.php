@@ -71,4 +71,10 @@ class Product
 
         return $this;
     }
+
+    #[Groups(['list'])]
+    public function getCatalogName(): ?string
+    {
+        return $this->catalog?->getName();
+    }
 }

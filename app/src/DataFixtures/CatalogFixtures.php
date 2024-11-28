@@ -15,25 +15,11 @@ class CatalogFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $catalogs = [
-            [
-                'name' => 'Catalog 01',
-                'products' => [1, 2],
-            ],
-            [
-                'name' => 'Catalog 02',
-                'products' => [3, 4, 5],
-            ],
-            [
-                'name' => 'Catalog 03',
-                'products' => [6],
-            ],
-            [
-                'name' => 'Catalog 33',
-                'products' => [7],
-            ],
+            ['name' => 'Catalog 02', 'products' => [3, 4, 5]],
+            ['name' => 'Catalog 33', 'products' => [7]],
+            ['name' => 'Catalog 01', 'products' => [1, 2]],
+            ['name' => 'Catalog 03', 'products' => [6]],
         ];
-
-        shuffle($catalogs);
 
         foreach ($catalogs as $catalogData) {
             $catalog = (new Catalog())
